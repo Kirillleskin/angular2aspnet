@@ -5,8 +5,16 @@
       <EntityTypeMapping TypeName="testDBModel.Book">
         <MappingFragment StoreEntitySet="Book">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Category" ColumnName="Category" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="testDBModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

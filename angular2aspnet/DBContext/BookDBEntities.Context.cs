@@ -26,5 +26,6 @@ namespace angular2aspnet.DBContext
         }
     
         public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
     }
 }

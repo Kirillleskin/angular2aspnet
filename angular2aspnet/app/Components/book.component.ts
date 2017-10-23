@@ -3,23 +3,24 @@ import { BookService } from '../Service/book.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { IBook } from '../Models/book';
+import { ICategory } from '../Models/category';
 import { DBOperation } from '../Shared/enum';
 import { Observable } from 'rxjs/Rx';
 import { Global } from '../Shared/global';
 
 @Component({
-
     templateUrl: 'app/Components/book.component.html'
-
 })
 
 export class BookComponent implements OnInit {
     @ViewChild('modal') modal: ModalComponent;
     books: IBook[];
     book: IBook;
+    categories: ICategory[];
     msg: string;
     indLoading: boolean = false;
     bookFrm: FormGroup;
+    Category: FormGroup;
     dbops: DBOperation;
     modalTitle: string;
     modalBtnTitle: string;
@@ -27,21 +28,28 @@ export class BookComponent implements OnInit {
     constructor(private fb: FormBuilder, private _bookService: BookService) { }
 
     ngOnInit(): void {
-
+        
         this.bookFrm = this.fb.group({
             Id: [''],
+            CategoryID: [''],
             Name: ['', Validators.required],
-            Category: ['']
+            Category: []
         });
-
+       
         this.LoadBooks();
-
+        this.LoadCategories();
     }
-
+    
     LoadBooks(): void {
         this.indLoading = true;
-        this._bookService.get(Global.BASE_BOOK_ENDPOINT)
+        this._bookService.get(Global.BOOK_ENDPOINT)
             .subscribe(books => { this.books = books; this.indLoading = false; },
+            error => this.msg = <any>error);
+    }
+
+    LoadCategories(): void {
+        this._bookService.get(Global.CATEGORY_ENDPOINT)
+            .subscribe(categories => { this.categories = categories; },
             error => this.msg = <any>error);
     }
 
@@ -80,10 +88,9 @@ export class BookComponent implements OnInit {
 
     onSubmit(formData: any) {
         this.msg = "";
-
         switch (this.dbops) {
             case DBOperation.create:
-                this._bookService.post(Global.BASE_BOOK_ENDPOINT, formData._value).subscribe(
+                this._bookService.post(Global.BOOK_ENDPOINT, formData._value).subscribe(
                     data => {
                         if (data == 1) //Success
                         {
@@ -102,7 +109,8 @@ export class BookComponent implements OnInit {
                 );
                 break;
             case DBOperation.update:
-                this._bookService.put(Global.BASE_BOOK_ENDPOINT, formData._value.Id, formData._value).subscribe(
+                formData._value.Category = this.categories.filter(x => x.Id == formData._value.CategoryID)[0]
+                this._bookService.put(Global.BOOK_ENDPOINT, formData._value.Id, formData._value).subscribe(
                     data => {
                         if (data == 1) //Success
                         {
@@ -121,7 +129,7 @@ export class BookComponent implements OnInit {
                 );
                 break;
             case DBOperation.delete:
-                this._bookService.delete(Global.BASE_BOOK_ENDPOINT, formData._value.Id).subscribe(
+                this._bookService.delete(Global.BOOK_ENDPOINT, formData._value.Id).subscribe(
                     data => {
                         if (data == 1) //Success
                         {

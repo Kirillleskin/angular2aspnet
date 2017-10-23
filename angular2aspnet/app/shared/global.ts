@@ -1,3 +1,4 @@
 ﻿export class Global {
-    public static BASE_BOOK_ENDPOINT = 'api/bookapi/';
+    public static BOOK_ENDPOINT = 'api/bookapi/';
+    public static CATEGORY_ENDPOINT = 'api/categoryapi/';
 }

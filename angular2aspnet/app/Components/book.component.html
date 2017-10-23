@@ -21,7 +21,7 @@
                 <tbody>
                     <tr *ngFor="let book of books">
                         <td>{{book.Name}}</td>
-                        <td>{{book.Category}}</td>
+                        <td>{{book.Category.CategoryName}}</td>
                         <td>
                             <button title="Edit" class="btn btn-primary" (click)="editBook(book.Id)">Edit</button>
                             <button title="Delete" class="btn btn-danger" (click)="deleteBook(book.Id)">Delete</button>
@@ -50,12 +50,17 @@
 
             <div class="form-group">
                 <div>
-                    <span>Name*</span>
+                    <span>Name</span>
                     <input type="text" class="form-control" placeholder="Name" formControlName="Name">
                 </div>
                 <div>
                     <span>Category</span>
-                    <input type="text" class="form-control" placeholder="Category" formControlName="Category">
+                    <select class="form-control dropdown"
+                            name="category" formControlName="CategoryID" required>
+                        <option *ngFor="let category of categories" [ngValue]="category.Id">
+                            {{ category.CategoryName }}
+                        </option>
+                    </select>
                 </div>
             </div>
         </modal-body>

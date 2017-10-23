@@ -15,7 +15,9 @@ namespace angular2aspnet.DBContext
     public partial class Book
     {
         public int Id { get; set; }
+        public int CategoryID { get; set; }
         public string Name { get; set; }
-        public string Category { get; set; }
+    
+        public virtual Category Category { get; set; }
     }
 }

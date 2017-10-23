@@ -23,16 +23,23 @@ var BookComponent = (function () {
     BookComponent.prototype.ngOnInit = function () {
         this.bookFrm = this.fb.group({
             Id: [''],
+            CategoryID: [''],
             Name: ['', forms_1.Validators.required],
-            Category: ['']
+            Category: []
         });
         this.LoadBooks();
+        this.LoadCategories();
     };
     BookComponent.prototype.LoadBooks = function () {
         var _this = this;
         this.indLoading = true;
-        this._bookService.get(global_1.Global.BASE_BOOK_ENDPOINT)
+        this._bookService.get(global_1.Global.BOOK_ENDPOINT)
             .subscribe(function (books) { _this.books = books; _this.indLoading = false; }, function (error) { return _this.msg = error; });
+    };
+    BookComponent.prototype.LoadCategories = function () {
+        var _this = this;
+        this._bookService.get(global_1.Global.CATEGORY_ENDPOINT)
+            .subscribe(function (categories) { _this.categories = categories; }, function (error) { return _this.msg = error; });
     };
     BookComponent.prototype.addBook = function () {
         this.dbops = enum_1.DBOperation.create;
@@ -68,7 +75,7 @@ var BookComponent = (function () {
         this.msg = "";
         switch (this.dbops) {
             case enum_1.DBOperation.create:
-                this._bookService.post(global_1.Global.BASE_BOOK_ENDPOINT, formData._value).subscribe(function (data) {
+                this._bookService.post(global_1.Global.BOOK_ENDPOINT, formData._value).subscribe(function (data) {
                     if (data == 1) {
                         _this.msg = "Data successfully added.";
                         _this.LoadBooks();
@@ -82,7 +89,8 @@ var BookComponent = (function () {
                 });
                 break;
             case enum_1.DBOperation.update:
-                this._bookService.put(global_1.Global.BASE_BOOK_ENDPOINT, formData._value.Id, formData._value).subscribe(function (data) {
+                formData._value.Category = this.categories.filter(function (x) { return x.Id == formData._value.CategoryID; })[0];
+                this._bookService.put(global_1.Global.BOOK_ENDPOINT, formData._value.Id, formData._value).subscribe(function (data) {
                     if (data == 1) {
                         _this.msg = "Data successfully updated.";
                         _this.LoadBooks();
@@ -96,7 +104,7 @@ var BookComponent = (function () {
                 });
                 break;
             case enum_1.DBOperation.delete:
-                this._bookService.delete(global_1.Global.BASE_BOOK_ENDPOINT, formData._value.Id).subscribe(function (data) {
+                this._bookService.delete(global_1.Global.BOOK_ENDPOINT, formData._value.Id).subscribe(function (data) {
                     if (data == 1) {
                         _this.msg = "Data successfully deleted.";
                         _this.LoadBooks();
