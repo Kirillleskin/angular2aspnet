@@ -1,0 +1,69 @@
+﻿<div class='panel panel-primary'>
+    <div class='panel-heading'>
+        Books
+    </div>
+    <div class='panel-body'>
+        <div class='table-responsive'>
+            <div style="padding-bottom:10px"><button class="btn btn-primary" (click)="addBook()">Add</button></div>
+            <div class="alert alert-info" role="alert" *ngIf="indLoading">
+                <img src="../../images/loader.gif" width="32" height="32" /> 
+                Loading...
+            </div>
+            <div *ngIf='books && books.length==0' class="alert alert-info" role="alert">No record found!</div>
+            <table class='table table-striped' *ngIf='books && books.length'>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let book of books">
+                        <td>{{book.Name}}</td>
+                        <td>{{book.Category}}</td>
+                        <td>
+                            <button title="Edit" class="btn btn-primary" (click)="editBook(book.Id)">Edit</button>
+                            <button title="Delete" class="btn btn-danger" (click)="deleteBook(book.Id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+        <div *ngIf="msg" role="alert" class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            {{msg}}
+        </div>
+    </div>
+</div>
+
+<modal #modal>
+    <form novalidate (ngSubmit)="onSubmit(bookFrm)" [formGroup]="bookFrm">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{modalTitle}}</h4>
+        </modal-header>
+        <modal-body>
+
+            <div class="form-group">
+                <div>
+                    <span>Name*</span>
+                    <input type="text" class="form-control" placeholder="Name" formControlName="Name">
+                </div>
+                <div>
+                    <span>Category</span>
+                    <input type="text" class="form-control" placeholder="Category" formControlName="Category">
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div>
+                <a class="btn btn-default" (click)="modal.dismiss()">Cancel</a>
+                <button type="submit" [disabled]="bookFrm.invalid" class="btn btn-primary">{{modalBtnTitle}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
