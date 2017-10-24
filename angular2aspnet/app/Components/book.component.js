@@ -89,7 +89,6 @@ var BookComponent = (function () {
                 });
                 break;
             case enum_1.DBOperation.update:
-                formData._value.Category = this.categories.filter(function (x) { return x.Id == formData._value.CategoryID; })[0];
                 this._bookService.put(global_1.Global.BOOK_ENDPOINT, formData._value.Id, formData._value).subscribe(function (data) {
                     if (data == 1) {
                         _this.msg = "Data successfully updated.";

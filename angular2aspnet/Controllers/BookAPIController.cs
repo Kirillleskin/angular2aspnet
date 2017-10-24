@@ -23,7 +23,9 @@ namespace angular2aspnet.Controllers
 
         public HttpResponseMessage Put(int id, [FromBody]Book value)
         {
-            BookDB.Entry(value).State = EntityState.Modified;
+            var foundValue = BookDB.Books.Find(value.Id);
+            BookDB.Entry(foundValue).CurrentValues.SetValues(value);
+            BookDB.Entry(foundValue).State = EntityState.Modified;
             return ToJson(BookDB.SaveChanges());
         }
         public HttpResponseMessage Delete(int id)

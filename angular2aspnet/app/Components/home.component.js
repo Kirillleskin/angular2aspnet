@@ -13,7 +13,7 @@ var HomeComponent = (function () {
 }());
 HomeComponent = __decorate([
     core_1.Component({
-        template: "<h1>Hello World App!</h1>"
+        template: "<h1>Test Angular Application!</h1>"
     })
 ], HomeComponent);
 exports.HomeComponent = HomeComponent;

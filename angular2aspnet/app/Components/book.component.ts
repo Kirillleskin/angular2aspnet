@@ -109,7 +109,6 @@ export class BookComponent implements OnInit {
                 );
                 break;
             case DBOperation.update:
-                formData._value.Category = this.categories.filter(x => x.Id == formData._value.CategoryID)[0]
                 this._bookService.put(Global.BOOK_ENDPOINT, formData._value.Id, formData._value).subscribe(
                     data => {
                         if (data == 1) //Success
